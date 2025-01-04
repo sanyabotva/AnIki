@@ -10,19 +10,21 @@ import SwiftData
 
 @Model
 final class Deck {
-    var isDefault: Bool
     var name: String
+    var isDefault: Bool
     var createdAt: Date
     var updatedAt: Date
+    var feedSize: Int
     
     @Relationship(deleteRule: .cascade, inverse: \Card.deck)
     var cards: [Card]
     
-    init(isDefault: Bool, name: String, createdAt: Date, updatedAt: Date, cards: [Card]) {
-        self.isDefault = isDefault
+    init(name: String, isDefault: Bool, createdAt: Date, updatedAt: Date, feedSize: Int, cards: [Card]) {
         self.name = name
+        self.isDefault = isDefault
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.feedSize = feedSize
         self.cards = cards
     }
 }
