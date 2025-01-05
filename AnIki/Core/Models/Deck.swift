@@ -27,5 +27,13 @@ final class Deck {
         self.feedSize = feedSize
         self.cards = cards
     }
+//    func add1() {
+//        Self.add2()
+//    }
+//    static func add2() {
+//        
+//    }
 }
 
+//Deck(name: "Name", isDefault: true, createdAt: Date(), updatedAt: Date(), feedSize: 50, cards: []).type
+//Deck.add2()

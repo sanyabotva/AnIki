@@ -10,16 +10,19 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [Deck]
 
     var body: some View {
         NavigationSplitView {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text("Deck name \(item.name)")
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        HStack {
+                            Text(item.name)
+                            Text("\(item.isDefault ? "Default" : "")")
+                        }
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -41,8 +44,23 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+            do {
+                try modelContext.transaction {
+                    let fetchDescriptor = FetchDescriptor<Deck>(predicate: #Predicate<Deck> { deck in
+                        deck.isDefault == true
+                    })
+                    let decks = try modelContext.fetch(fetchDescriptor)
+                    for deck in decks {
+                        deck.isDefault = false
+                    }
+                    let newDeck = Deck(name: "Deck_Name", isDefault: true, createdAt: Date(), updatedAt: Date(), feedSize: 50, cards: [])
+                    modelContext.insert(newDeck)
+                    try modelContext.save()
+                }
+            } catch {
+                // fatalError to be added
+            }
+
         }
     }
 

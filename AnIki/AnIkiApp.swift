@@ -12,7 +12,8 @@ import SwiftData
 struct AnIkiApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Deck.self,
+            Card.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
